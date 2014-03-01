@@ -28,8 +28,8 @@ deploy, this will be from master branch so this will be stable.
 
 Authors
 -------
-[Xabier Larrakoetxea](http://github.com/slok)
-[Alvaro Salazar](http://github.com/xala3pa)
+* [Xabier Larrakoetxea](http://github.com/slok)
+* [Alvaro Salazar](http://github.com/xala3pa)
 
 License
 -------
