@@ -42,6 +42,7 @@ THIRD_PARTY_APPS = (
 )
 
 LOCAL_APPS = (
+    "members",
 )
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
@@ -92,3 +93,6 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
 
 STATIC_URL = '/static/'
+
+# Custom user
+AUTH_USER_MODEL = "members.User"
