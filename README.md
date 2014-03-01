@@ -1,9 +1,9 @@
 sharestack-rest
 ===============
 
-|workflow | CI | Coverage|
+|Workflow | CI | Coverage|
 |---------|----|---------|
-| [![Stories in Ready](https://badge.waffle.io/slok/celery-go.png?label=ready)](http://waffle.io/slok/celery-go) | | |
+| [![Stories in Ready](https://badge.waffle.io/sharestack/sharestack-api.png?label=ready)](http://waffle.io/sharestack/sharestack-api) | | |
 |--------------------------------------------------------------------------------------------------------------------|
 
 What is Sharestack?
