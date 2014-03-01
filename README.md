@@ -26,6 +26,12 @@ We will develop in issue branches, when this issues are finished will merge
 in develop branches to test how it works with the unstable branch. When we
 deploy, this will be from master branch so this will be stable.
 
+Documents
+---------
+
+* [Model desing](https://docs.google.com/drawings/d/107rvTOx0DlW_s2EaMIpMIy2WzW5vg_rm0gJ5E0T5_sU/edit?usp=sharing)
+
+
 Authors
 -------
 * [Xabier Larrakoetxea](http://github.com/slok)
