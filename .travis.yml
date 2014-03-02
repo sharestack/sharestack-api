@@ -1,0 +1,16 @@
+language: python
+services:
+  - postgresql
+python:
+  - 2.6
+  - 2.7
+before_script:
+  - psql -c 'create database sharestack;' -U postgres
+install:
+  - pip install -q -r requirements/test.txt
+script:
+  - cd sharestackapi && ./manage.py test --settings=sharestackapi.settings.test
+notifications:
+  email:
+    - slok69@gmail.com
+    - salazar3pa@gmail.com
