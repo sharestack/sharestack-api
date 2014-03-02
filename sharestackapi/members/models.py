@@ -15,13 +15,13 @@ class User(AbstractUser):
     activation_token = models.CharField(
         _("activation_token"),
         max_length=40,
-        default=uuid.uuid4(),
+        default=str(uuid.uuid4()),
         blank=True
     )
     reset_password_token = models.CharField(
         _("reset_password_token"),
         max_length=40,
-        default=uuid.uuid4(),
+        default=str(uuid.uuid4()),
         blank=True
     )
 
