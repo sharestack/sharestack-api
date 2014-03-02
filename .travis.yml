@@ -7,7 +7,7 @@ python:
 before_script:
   - psql -c 'create database sharestack;' -U postgres
 install:
-  - pip install -q -r requirements/test.txt --use-mirrors
+  - pip install -q -r requirements/test.txt
 script:
   - cd sharestackapi && ./manage.py test --settings=sharestackapi.settings.test
 notifications:
