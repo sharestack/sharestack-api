@@ -9,7 +9,7 @@ before_script:
 install:
   - pip install -q -r requirements/test.txt --use-mirrors
 script:
-  - ./manage.py test --settings=sharestackapi.settings.test
+  - cd sharestackapi && ./manage.py test --settings=sharestackapi.settings.test
 notifications:
   email:
     - slok69@gmail.com
