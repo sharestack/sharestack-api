@@ -69,6 +69,9 @@ class UserModelTests(TestCase):
         users = User.objects.filter(email__contains='superheroes.com')
         self.assertEqual(len(users), len(self.users))
 
-
+    def test_str(self):
+        for i in self.users:
+            u = User(**i)
+            self.assertEqual(str(u), i["username"])
 
 
