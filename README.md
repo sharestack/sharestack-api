@@ -3,7 +3,7 @@ sharestack-rest
 
 |Workflow | CI | Coverage|
 |---------|----|---------|
-| [![Stories in Ready](https://badge.waffle.io/sharestack/sharestack-api.png?label=ready)](http://waffle.io/sharestack/sharestack-api) | [![Build Status](https://travis-ci.org/sharestack/sharestack-api.png)](https://travis-ci.org/sharestack/sharestack-api)| [![Coverage Status](https://coveralls.io/repos/sharestack/sharestack-api/badge.png)](https://coveralls.io/r/sharestack/sharestack-api) |
+| [![Stories in Ready](https://badge.waffle.io/sharestack/sharestack-api.png?label=ready)](http://waffle.io/sharestack/sharestack-api) | [![Build Status](https://travis-ci.org/sharestack/sharestack-api.png)](https://travis-ci.org/sharestack/sharestack-api)| [![Coverage Status](https://coveralls.io/repos/sharestack/sharestack-api/badge.png?branch=develop)](https://coveralls.io/r/sharestack/sharestack-api?branch=develop) |
 
 What is Sharestack?
 -------------------
