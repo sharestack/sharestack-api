@@ -1,9 +1,9 @@
 sharestack-rest
 ===============
 
-|Workflow | CI | Coverage| Dependencies |
-|---------|----|---------|--------------|
-| [![Stories in Ready](https://badge.waffle.io/sharestack/sharestack-api.png?label=ready)](http://waffle.io/sharestack/sharestack-api) | [![Build Status](https://travis-ci.org/sharestack/sharestack-api.png)](https://travis-ci.org/sharestack/sharestack-api)| [![Coverage Status](https://coveralls.io/repos/sharestack/sharestack-api/badge.png?branch=develop)](https://coveralls.io/r/sharestack/sharestack-api?branch=develop) | [![Requirements Status](https://requires.io/github/sharestack/sharestack-api/requirements.png?branch=develop)](https://requires.io/github/sharestack/sharestack-api/requirements/?branch=develop) |
+|Workflow | CI | Coverage| Dependencies | Quality |
+|---------|----|---------|--------------|---------|
+| [![Stories in Ready](https://badge.waffle.io/sharestack/sharestack-api.png?label=ready)](http://waffle.io/sharestack/sharestack-api) | [![Build Status](https://travis-ci.org/sharestack/sharestack-api.png)](https://travis-ci.org/sharestack/sharestack-api)| [![Coverage Status](https://coveralls.io/repos/sharestack/sharestack-api/badge.png?branch=develop)](https://coveralls.io/r/sharestack/sharestack-api?branch=develop) | [![Requirements Status](https://requires.io/github/sharestack/sharestack-api/requirements.png?branch=develop)](https://requires.io/github/sharestack/sharestack-api/requirements/?branch=develop) | [![Code Health](https://landscape.io/github/sharestack/sharestack-api/develop/landscape.png)](https://landscape.io/github/sharestack/sharestack-api/develop) |
 
 What is Sharestack?
 -------------------
