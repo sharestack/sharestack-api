@@ -64,11 +64,56 @@ stacks = [
 ]
 
 instances = [
-    {"name": "erebor"},
-    {"name": "rohan"},
-    {"name": "the-shire"},
-    {"name": "mordor"},
-    {"name": "gondor"},
+    {
+        "name": "erebor",
+        "ram": "1.7GiB",
+        "cpu": "1(ECU), 1(vCPU)",
+        "hdd": "1x160GiB",
+        "instance_type": "m1.small",
+        "provider": "Amazon AWS",
+        "provider_name": "Amazon Linux AMI 2013.09.2 - ami-ccf297fc (64-bit)",
+        "description": "Small"
+    },
+    {
+        "name": "rohan",
+        "ram": "3.75GiB",
+        "cpu": "6.5(ECU), 2(vCPU)",
+        "hdd": "1x4GiB (SSD)",
+        "instance_type": "m3.medium",
+        "provider": "Amazon AWS",
+        "provider_name": "Red Hat Enterprise Linux 6.4 (PV) - ami-b8a63b88",
+        "description": "Medium"
+    },
+    {
+        "name": "the-shire",
+        "ram": "68.4GiB",
+        "cpu": "26(ECU), 8(vCPU)",
+        "hdd": "2x840GiB",
+        "instance_type": "m2.4xlarge",
+        "provider": "Amazon AWS",
+        "provider_name": "Ubuntu Server 12.04 LTS (PV) - ami-fa9cf1ca (64-bit)",
+        "description": "Big"
+    },
+    {
+        "name": "mordor",
+        "ram": "60.5GiB",
+        "cpu": "35(ECU), 16(vCPU)",
+        "hdd": "2x1024GiB (SSD)",
+        "instance_type": "hi1.4xlarge",
+        "provider": "Amazon AWS",
+        "provider_name": "Ubuntu Server 13.10 (PV) - ami-7eaecc4e (64-bit)",
+        "description": "Gigantic"
+    },
+    {
+        "name": "gondor",
+        "ram": "30GiB",
+        "cpu": "55(ECU), 16(vCPU)",
+        "hdd": "2x160GiB (SSD)",
+        "instance_type": "c3.4xlarge",
+        "provider": "Amazon AWS",
+        "provider_name": "SuSE Linux Enterprise Server 11 sp3 (HVM) ",
+        "description": "Badass"
+    },
 ]
 
 

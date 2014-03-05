@@ -8,7 +8,7 @@ class StackAdmin(admin.ModelAdmin):
 
 
 class InstanceAdmin(admin.ModelAdmin):
-    list_display = ("id", "name", "stack")
+    list_display = ("id", "name", "stack", "provider", "provider_name")
 
 
 admin.site.register(Stack, StackAdmin)

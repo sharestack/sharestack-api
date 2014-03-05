@@ -32,7 +32,21 @@ class Instance(models.Model):
     name = models.CharField(_("instance name"),
                             max_length=30,
                             null=False)
+    # Specs
+    ram = models.CharField(_("ram specs"), max_length=60, blank=True)
+    cpu = models.CharField(_("cpu specs"), max_length=60, blank=True)
+    hdd = models.CharField(_("hdd specs"), max_length=60, blank=True)
+    instance_type = models.CharField(_("instance type"),
+                                     max_length=60,
+                                     blank=True)
+    provider = models.CharField(_("provider name"), max_length=60, blank=True)
+    provider_name = models.CharField(_("provider instance name"),
+                                     max_length=60,
+                                     blank=True)
+    description = models.TextField(_("instance description"), blank=True)
+
     stack =  models.ForeignKey(Stack)
+
 
     def __str__(self):
         return self.name
