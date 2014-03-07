@@ -9,7 +9,7 @@ before_script:
 install:
   - pip install -q -r requirements/test.txt
 script:
-  - cd sharestackapi && coverage run --omit="*/migrations/*" --source=sharestack,machines,members ./manage.py test --settings=sharestackapi.settings.test
+  - cd sharestackapi && coverage run --omit="*/migrations/*" --source=sharestack,machines,members,techs ./manage.py test --settings=sharestackapi.settings.test
 after_success:
   - coveralls
 notifications:
