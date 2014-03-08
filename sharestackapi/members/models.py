@@ -28,3 +28,18 @@ class User(AbstractUser):
 
     def __str__(self):
         return self.username
+
+class Company(models.Model):
+    name = models.CharField(_("name"),
+        max_length=50)
+    url = models.URLField(_("url"),
+        blank=True)
+    description = models.TextField(_("description"),
+        blank=True)
+    logo = models.URLField(_("logo"),
+         blank=True)
+    company_user = models.ManyToManyField(User,
+        blank=True)
+
+    def __str__(self):
+        return self.name
