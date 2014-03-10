@@ -2,8 +2,7 @@ import random
 
 from django.test import TestCase
 
-from .models import User
-from .models import Company
+from .models import User, Company
 
 
 class UserModelTests(TestCase):
