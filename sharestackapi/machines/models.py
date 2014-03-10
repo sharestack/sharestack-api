@@ -3,6 +3,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.utils.encoding import python_2_unicode_compatible
 
 from members.models import User
+from techs.models import Component
 
 
 @python_2_unicode_compatible # For Python 3.3 and 2.7
@@ -46,7 +47,7 @@ class Instance(models.Model):
     description = models.TextField(_("instance description"), blank=True)
 
     stack =  models.ForeignKey(Stack)
-
+    components = models.ManyToManyField(Component, blank=True)
 
     def __str__(self):
         return self.name
