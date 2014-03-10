@@ -2,7 +2,9 @@ import random
 
 from django.test import TestCase
 
-from .models import User, Stack, Instance
+from members.models import User
+from techs.models import Tech, Component
+from .models import Stack, Instance
 
 
 # shared data across the tests
@@ -115,6 +117,40 @@ instances = [
         "description": "Badass"
     },
 ]
+
+techs = {
+    "postgresql": {
+        "name": "postgresql",
+        "description": "The best relational database",
+        "url": "http://www.postgresql.org/",
+        "logo": "http://someimage.com/some.png",
+        "open_source": True,
+        "repo": "https://github.com/postgres/postgres",
+    },
+    "nginx": {
+        "name": "nginx",
+        "description": "The best http server",
+        "url": "http://nginx.org/",
+        "logo": "http://someimage.com/some.png",
+        "open_source": True,
+        "repo": "http://hg.nginx.org/nginx",
+    },
+}
+
+components = {
+    "nginx": {
+        "name": "nginx",
+        "version": "1.5.11",
+        "config": 'nginx config big string',
+        "description": "This is a description of a versioned nginx",
+    },
+    "postgresql": {
+        "name": "postgresql",
+        "version": "9.3",
+        "config": 'postgres config',
+        "description": "This is a description of a versioned postgres",
+    },
+}
 
 
 class StackModelTests(TestCase):
@@ -249,6 +285,29 @@ class InstanceModelTests(TestCase):
         s = Stack.objects.get(name=self.stacks[0].name)
         self.assertEqual(len(s.instance_set.all()), len(instances))
 
+        # check that component relation is ok
+        nginx_tech = Tech(**techs["nginx"])
+        nginx_tech.save()
+        nginx = Component(**components["nginx"])
+        nginx.tech = nginx_tech
+        postgresql_tech = Tech(**techs["postgresql"])
+        postgresql_tech.save()
+        postgresql = Component(**components["postgresql"])
+        postgresql.tech = postgresql_tech
+
+        nginx.save()
+        postgresql.save()
+
+        it = Instance.objects.get(name="erebor")
+        it2 = Instance.objects.get(name="rohan")
+        it.components.add(nginx, postgresql)
+        it2.components.add(nginx)
+
+        nginx2 = Component.objects.get(name="nginx")
+        postgresql2 = Component.objects.get(name="postgresql")
+
+        self.assertEqual(len(nginx2.instance_set.all()), 2)
+        self.assertEqual(len(postgresql2.instance_set.all()), 1)
 
     def test_str(self):
         for i in instances:

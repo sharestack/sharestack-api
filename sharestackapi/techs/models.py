@@ -31,3 +31,18 @@ class Tech(models.Model):
 
     def __str__(self):
         return self.name
+
+
+@python_2_unicode_compatible  # For Python 3.3 and 2.7
+class Component(models.Model):
+    name = models.CharField(_("component name"),
+                            max_length=30,
+                            null=False)
+    version = models.CharField(_("tech version"),
+                               max_length=15)
+    config = models.TextField(_("configuration"), blank=True)
+    description = models.TextField(_("description"), blank=True)
+    tech = models.ForeignKey(Tech)
+
+    def __str__(self):
+        return self.name

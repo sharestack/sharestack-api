@@ -2,7 +2,7 @@ import random
 
 from django.test import TestCase
 
-from .models import TechType, Tech
+from .models import TechType, Tech, Component
 
 
 # shared data across the tests
@@ -84,6 +84,34 @@ techs = [
     },
 ]
 
+components = [
+    {
+        "name": "sharestack",
+        "version": "1.0",
+        "config": '{"json-config": "yeah"}',
+        "description": "This is a description of a versioned app",
+    },
+    {
+        "name": "nginx",
+        "version": "1.5.11",
+        "config": 'nginx config big string',
+        "description": "This is a description of a versioned nginx",
+    },
+    {
+        "name": "postgresql",
+        "version": "9.3",
+        "config": 'postgres config',
+        "description": "This is a description of a versioned postgres",
+    },
+
+    {
+        "name": "python",
+        "version": "2.7.6",
+        "config": 'python config',
+        "description": "This is a description of a versioned python",
+    },
+]
+
 
 class TechTypeTests(TestCase):
 
@@ -121,14 +149,6 @@ class TechTypeTests(TestCase):
 
 
 class TechTests(TestCase):
-
-    def setUp(self):
-        # Save first all the types
-        self.type_objects = {}
-        for i in types:
-            t = TechType(**i)
-            t.save
-            self.type_objects[i["name"]] = t
 
     def test_save(self):
         for i in techs:
@@ -209,4 +229,62 @@ class TechTests(TestCase):
     def test_str(self):
         for i in techs:
             t = Tech(**i)
+            self.assertEqual(str(t), i["name"])
+
+
+class ComponentTests(TestCase):
+
+    def setUp(self):
+        # Save first all the types
+        self.tech_objects = {}
+        for i in techs:
+            t = Tech(**i)
+            t.save()
+            self.tech_objects[i["name"]] = t
+
+    def test_save(self):
+        for i in components:
+            c = Component(**i)
+            c.tech = self.tech_objects[c.name]
+            c.save()
+
+        self.assertEqual(len(Component.objects.all()), len(components))
+
+    def test_retrieval(self):
+        for i in components:
+            c = Component(**i)
+            c.tech = self.tech_objects[c.name]
+            c.save()
+
+            c2 = Component.objects.get(id=c.id)
+            self.assertEqual(c, c2)
+
+    def test_filter(self):
+        for i in components:
+            c = Component(**i)
+            c.tech = self.tech_objects[c.name]
+            c.save()
+
+        component = components[random.randrange(len(components))]
+        c = Component.objects.filter(name=component["name"])[0]
+        self.assertEqual(c.version, component["version"])
+
+    def test_related_fields(self):
+        # Create 2 components and add the same tech to each.
+        django_tech = Tech.objects.get(name="django")
+        sharestack = Component(**components[0])
+        sharestack.tech = django_tech
+        nginx = Component(**components[1])
+        nginx.tech = django_tech
+
+        sharestack.save()
+        nginx.save()
+
+        # Check the tech has the 2 components
+        t = Tech.objects.get(name=django_tech.name)
+        self.assertEqual(len(t.component_set.all()), 2)
+
+    def test_str(self):
+        for i in components:
+            t = Component(**i)
             self.assertEqual(str(t), i["name"])
