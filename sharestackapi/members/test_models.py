@@ -2,7 +2,7 @@ import random
 
 from django.test import TestCase
 
-from .models import User
+from .models import User, Company
 
 
 class UserModelTests(TestCase):
@@ -73,5 +73,71 @@ class UserModelTests(TestCase):
         for i in self.users:
             u = User(**i)
             self.assertEqual(str(u), i["username"])
+
+
+class CompanyModelTests(TestCase):
+
+    def setUp(self):
+        self.companies = [
+            {
+                "name": "DC",
+                "url": "DCcomics.com",
+                "description": """DC Comics, Inc. is one of the largest 
+                    and most successful companies operating 
+                    in the market for American comic books 
+                    and related media""",
+                "logo": "http://www.dccomics.com/logo.png",
+            },
+            {
+               "name": "Marvel",
+                "url": "marvel.com",
+                "description": """is an American publisher 
+                    of comic books and related media""",
+                "logo": "http://www.marvel.com/logo.png",
+            },
+            {
+                "name": "Darkhorse",
+                "url": "darkhorse.com",
+                "description": """Dark Horse Comics is an 
+                    American comic book and manga publisher.""",
+                "logo": "http://www.darkhorse.com/logo.png",
+            },
+        ]
+
+    def test_save(self):
+        for i in self.companies:
+            company = Company(**i)
+            company.save()
+
+        self.assertEqual(len(Company.objects.all()), len(self.companies))
+
+    def test_retrieval(self):
+        for i in self.companies:
+            company = Company(**i)
+            company.save()
+            company2 = Company.objects.get(id=company.id)
+            self.assertEqual(company, company2)
+
+    def test_filter(self):
+        for i in self.companies:
+            company = Company(**i)
+            company.save()
+
+        c = self.companies[random.randrange(len(self.companies))]
+        company = Company.objects.filter(name=c["name"])[0]
+        self.assertEqual(company.url, c["url"])
+
+    def test_like(self):
+        for i in self.companies:
+            company = Company(**i)
+            company.save()
+
+        companies = Company.objects.filter(logo__contains='logo.png')
+        self.assertEqual(len(companies), len(self.companies))
+
+    def test_str(self):
+        for i in self.companies:
+            company = Company(**i)
+            self.assertEqual(str(company), i["name"])
 
 
