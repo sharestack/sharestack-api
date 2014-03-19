@@ -40,6 +40,7 @@ DJANGO_APPS = (
 
 THIRD_PARTY_APPS = (
     "south",
+    'rest_framework',
 )
 
 LOCAL_APPS = (
@@ -99,3 +100,15 @@ STATIC_URL = '/static/'
 
 # Custom user
 AUTH_USER_MODEL = "members.User"
+
+
+# REST API settings
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': ('rest_framework.permissions.IsAdminUser',),
+    'PAGINATE_BY': 10,
+    'TEST_REQUEST_DEFAULT_FORMAT': 'json',
+}
+
+API_VERSION = "1"
+
+
