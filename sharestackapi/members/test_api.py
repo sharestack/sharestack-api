@@ -99,6 +99,8 @@ class UserAPITests(APITestCase):
     def test_list(self):
         url = reverse('user-list')
 
+        before = self.client.get(url).data["count"]
+
         # Sove N users
         number_users = random.randrange(20, 100)
         for i in range(number_users):
@@ -107,4 +109,96 @@ class UserAPITests(APITestCase):
 
         response = self.client.get(url)
 
-        self.assertEqual(response.data["count"], number_users + 1)
+        self.assertEqual(response.data["count"], number_users + before)
+
+
+class ContentTypeAPITests(APITestCase):
+
+    def setUp(self):
+        # Set an user so we can use the API
+        password = "I love my Xmen"
+        u = User()
+        u.username = "profesor-X"
+        u.set_password(password)
+        u.first_name = "Charles"
+        u.last_name = "Xavier"
+        u.is_superuser = True
+        u.is_active = True
+        u.is_staff = True
+        u.save()
+
+        # Login, we could use: 'force_authenticate' but we will login
+        # as always, the 'classic' way, wiht DRF help
+        self.client.login(username=u.username, password=password)
+
+        self.data = {
+            "name": "permission2",
+            "app_label": "auth2",
+            "model": "permission2"
+        }
+
+    def test_create(self):
+        url = reverse('contenttype-list')
+
+        response = self.client.post(url, self.data)
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        for k, v in self.data.items():
+            self.assertEqual(response.data[k], self.data[k])
+
+    def test_update(self):
+        # Save first (We have already, but we will get the id)
+        url = reverse('contenttype-list')
+        response = self.client.post(url, self.data)
+
+        # Update later
+        url = reverse('contenttype-detail', args=[response.data["id"]])
+
+        self.data["name"] = "changed"
+        response = self.client.put(url, self.data)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        for k, v in self.data.items():
+            self.assertEqual(response.data[k], self.data[k])
+
+    def test_detail(self):
+        url = reverse('contenttype-list')
+        response = self.client.post(url, self.data)
+
+        # Get the details
+        url = reverse('contenttype-detail', args=[response.data["id"]])
+        response = self.client.get(url)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        for k, v in self.data.items():
+            self.assertEqual(response.data[k], self.data[k])
+
+    def test_delete(self):
+        url = reverse('contenttype-list')
+        response = self.client.post(url, self.data)
+
+        # Get the details
+        url = reverse('contenttype-detail', args=[response.data["id"]])
+        response = self.client.delete(url)
+
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
+    def test_list(self):
+        url = reverse('contenttype-list')
+
+        before = self.client.get(url).data["count"]
+
+        number_content_type = random.randrange(20, 100)
+        for i in range(number_content_type):
+            self.data["name"] = "permission-{0}".format(i)
+            self.data["app_label"] = "auth-{0}".format(i)
+
+            response = self.client.post(url, self.data)
+
+        response = self.client.get(url)
+
+        # 17 are the default ones
+        self.assertEqual(response.data["count"], number_content_type + before)
