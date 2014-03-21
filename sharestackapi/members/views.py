@@ -1,6 +1,27 @@
-from .models import User
+from django.contrib.contenttypes.models import ContentType
+from django.contrib.auth.models import Permission
 from rest_framework import viewsets
-from .serializers import UserSerializer
+
+from .models import User
+from .serializers import (UserSerializer,
+                          PermissionSerializer,
+                          ContentTypeSerializer)
+
+
+class ContentTypeViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows Content type django model to be viewed or edited.
+    """
+    queryset = ContentType.objects.all()
+    serializer_class = ContentTypeSerializer
+
+
+class PermissionViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows permissions django model to be viewed or edited.
+    """
+    queryset = Permission.objects.all()
+    serializer_class = PermissionSerializer
 
 
 class UserViewSet(viewsets.ModelViewSet):
