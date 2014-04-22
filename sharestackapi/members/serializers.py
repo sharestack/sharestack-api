@@ -1,5 +1,5 @@
 from django.contrib.contenttypes.models import ContentType
-from django.contrib.auth.models import Permission
+from django.contrib.auth.models import Permission, Group
 from rest_framework import serializers
 
 from .models import User
@@ -18,6 +18,12 @@ class PermissionSerializer(serializers.HyperlinkedModelSerializer):
         fields = ("id", "name", "content_type", "codename")
 
 
+class GroupSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Group
+        fields = ("id", "name", "permissions")
+
+
 # Our models
 class UserSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
@@ -25,4 +31,4 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
         fields = ("id", "password", "last_login", "is_superuser", "username",
                   "first_name", "last_name", "email", "is_staff", "is_active",
                   "date_joined", "url", "gravatar", "activation_token",
-                  "reset_password_token")
+                  "reset_password_token", "groups")
