@@ -8,7 +8,8 @@ if sys.hexversion < 0x03000000:  # Python2 import
 else:  # Python3 import
     from urllib.parse import urlparse
 
-from django.contrib.auth.models import Group
+from django.contrib.contenttypes.models import ContentType
+from django.contrib.auth.models import Permission, Group
 from django.core.urlresolvers import reverse
 from rest_framework import status
 from rest_framework.test import APITestCase
@@ -31,12 +32,23 @@ class UserAPITests(APITestCase):
         u.is_staff = True
         u.save()
 
+        # Save content type
+        c1 = ContentType(name="test1", app_label="test", model="test")
+        c1.save()
+
         # Save 2 groups
         g1 = Group(name="test1")
         g2 = Group(name="test2")
 
         g1.save()
         g2.save()
+
+        # Save 2 permissions
+        p1 = Permission(name="test1", codename="test1", content_type=c1)
+        p2 = Permission(name="test2", codename="test2", content_type=c1)
+
+        p1.save()
+        p2.save()
 
         # Login, we could use: 'force_authenticate' but we will login
         # as always, the 'classic' way, wiht DRF help
@@ -56,6 +68,10 @@ class UserAPITests(APITestCase):
             "groups": [
                 reverse('group-detail', args=[g1.id]),
                 reverse('group-detail', args=[g2.id]),
+            ],
+            "user_permissions": [
+                reverse('permission-detail', args=[p1.id]),
+                reverse('permission-detail', args=[p2.id]),
             ]
         }
 
@@ -69,11 +85,15 @@ class UserAPITests(APITestCase):
 
         # Can't check as a full equals because id, last_login... are autofields
         for k, v in self.data.items():
-            if k != "groups":  # don't check group lists
+            # don't check group lists
+            if k not in ("groups", "user_permissions"):
                 self.assertEqual(response.data[k], self.data[k])
 
         self.assertEqual(len(response.data["groups"]),
                          len(self.data["groups"]))
+
+        self.assertEqual(len(response.data["user_permissions"]),
+                         len(self.data["user_permissions"]))
 
     def test_update(self):
         # Save first (We have already, but we will get the id)
@@ -89,12 +109,17 @@ class UserAPITests(APITestCase):
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
+        # Can't check as a full equals because id, last_login... are autofields
         for k, v in self.data.items():
-            if k != "groups":  # don't check group lists
+            # don't check group lists
+            if k not in ("groups", "user_permissions"):
                 self.assertEqual(response.data[k], self.data[k])
 
         self.assertEqual(len(response.data["groups"]),
                          len(self.data["groups"]))
+
+        self.assertEqual(len(response.data["user_permissions"]),
+                         len(self.data["user_permissions"]))
 
     def test_detail(self):
         # Save first (We have already, but we will get the id)
@@ -107,12 +132,17 @@ class UserAPITests(APITestCase):
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
+        # Can't check as a full equals because id, last_login... are autofields
         for k, v in self.data.items():
-            if k != "groups":  # don't check group lists
+            # don't check group lists
+            if k not in ("groups", "user_permissions"):
                 self.assertEqual(response.data[k], self.data[k])
 
         self.assertEqual(len(response.data["groups"]),
                          len(self.data["groups"]))
+
+        self.assertEqual(len(response.data["user_permissions"]),
+                         len(self.data["user_permissions"]))
 
     def test_delete(self):
          # Save first (We have already, but we will get the id)
