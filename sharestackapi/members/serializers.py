@@ -2,7 +2,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.contrib.auth.models import Permission, Group
 from rest_framework import serializers
 
-from .models import User
+from .models import User, Company
 
 
 # Django models
@@ -32,3 +32,9 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
                   "first_name", "last_name", "email", "is_staff", "is_active",
                   "date_joined", "url", "gravatar", "activation_token",
                   "reset_password_token", "groups", "user_permissions")
+
+
+class companySerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Company
+        fields = ("name", "url", "description", "logo", "company_user")

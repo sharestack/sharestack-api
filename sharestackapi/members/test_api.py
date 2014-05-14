@@ -465,3 +465,106 @@ class GroupAPITests(APITestCase):
         response = self.client.get(url)
 
         self.assertEqual(response.data["count"], number_content_type + before)
+
+
+class CompanyAPITests(APITestCase):
+
+    def setUp(self):
+        # Set an user so we can use the API
+        password = "I love my Xmen"
+        u = User()
+        u.username = "profesor-X"
+        u.set_password(password)
+        u.first_name = "Charles"
+        u.last_name = "Xavier"
+        u.is_superuser = True
+        u.is_active = True
+        u.is_staff = True
+        u.save()
+
+        # Login, we could use: 'force_authenticate' but we will login
+        # as always, the 'classic' way, wiht DRF help
+        self.client.login(username=u.username, password=password)
+
+        self.data = {
+            "name": "Can add log entry test",
+            "permissions": [
+                reverse('permission-detail', args=[1]),
+                reverse('permission-detail', args=[2]),
+                reverse('permission-detail', args=[3]),
+            ],
+        }
+
+    def test_create(self):
+        url = reverse('company-list')
+
+        response = self.client.post(url, self.data)
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+        self.assertEqual(response.data["name"], self.data["name"])
+        self.assertEqual(len(response.data["permissions"]),
+                         len(self.data["permissions"]))
+
+    def test_update(self):
+        # Save first (We have already, but we will get the id)
+        url = reverse('group-list')
+        response = self.client.post(url, self.data)
+
+        # Update later
+        url = reverse('group-detail', args=[response.data["id"]])
+
+        new_permissions = [
+            reverse('permission-detail', args=[3]),
+            reverse('permission-detail', args=[4]),
+        ]
+
+        self.data["permissions"] = new_permissions
+        response = self.client.put(url, self.data)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        self.assertEqual(response.data["name"], self.data["name"])
+        self.assertEqual(len(response.data["permissions"]),
+                         len(new_permissions))
+
+    def test_detail(self):
+        url = reverse('group-list')
+        response = self.client.post(url, self.data)
+
+        # Get the details
+        url = reverse('group-detail', args=[response.data["id"]])
+        response = self.client.get(url)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        self.assertEqual(response.data["name"], self.data["name"])
+        self.assertEqual(len(response.data["permissions"]),
+                         len(self.data["permissions"]))
+
+    def test_delete(self):
+        url = reverse('group-list')
+        response = self.client.post(url, self.data)
+
+        # Get the details
+        url = reverse('group-detail', args=[response.data["id"]])
+        response = self.client.delete(url)
+
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
+    def test_list(self):
+        url = reverse('group-list')
+
+        before = self.client.get(url).data["count"]
+
+        number_content_type = random.randrange(20, 100)
+        for i in range(number_content_type):
+            self.data["name"] = "name-{0}".format(i)
+
+            response = self.client.post(url, self.data)
+
+        response = self.client.get(url)
+
+        self.assertEqual(response.data["count"], number_content_type + before)

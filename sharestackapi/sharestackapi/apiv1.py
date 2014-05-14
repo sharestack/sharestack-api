@@ -11,6 +11,7 @@ router.register(r'contenttypes', member_views.ContentTypeViewSet)
 router.register(r'permissions', member_views.PermissionViewSet)
 router.register(r'groups', member_views.GroupViewSet)
 router.register(r'users', member_views.UserViewSet)
+router.register(r'companies', member_views.CompanyViewSet)
 
 router.register(r'stacks', machines_views.StackViewSet)
 
