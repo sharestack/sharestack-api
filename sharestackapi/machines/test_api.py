@@ -88,7 +88,7 @@ class StackAPITests(APITestCase):
 
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
-        # Can't check as a full equals because id, last_login... are autofields
+        # Can't check as a full equals because id... are autofields
         for k, v in self.data.items():
             # don't check group lists
             if k not in ("collaborators", "owner"):
@@ -100,80 +100,80 @@ class StackAPITests(APITestCase):
             self.assertEqual(len(response.data["collaborators"]),
                              len(self.users[1:]))
 
-#    def test_update(self):
-#        # Save first (We have already, but we will get the id)
-#        url = reverse('user-list')
-#
-#        response = self.client.post(url, self.data)
-#
-#        # Update later
-#        url = reverse('user-detail', args=[response.data["id"]])
-#
-#        self.data["url"] = "http://batmanisnotbrucewayne.com"
-#        response = self.client.put(url, self.data)
-#
-#        self.assertEqual(response.status_code, status.HTTP_200_OK)
-#
-#        # Can't check as a full equals because id, last_login... are autofields
-#        for k, v in self.data.items():
-#            # don't check group lists
-#            if k not in ("groups", "user_permissions"):
-#                self.assertEqual(response.data[k], self.data[k])
-#
-#        self.assertEqual(len(response.data["groups"]),
-#                         len(self.data["groups"]))
-#
-#        self.assertEqual(len(response.data["user_permissions"]),
-#                         len(self.data["user_permissions"]))
-#
-#    def test_detail(self):
-#        # Save first (We have already, but we will get the id)
-#        url = reverse('user-list')
-#        response = self.client.post(url, self.data)
-#
-#        # Get the details
-#        url = reverse('user-detail', args=[response.data["id"]])
-#        response = self.client.get(url)
-#
-#        self.assertEqual(response.status_code, status.HTTP_200_OK)
-#
-#        # Can't check as a full equals because id, last_login... are autofields
-#        for k, v in self.data.items():
-#            # don't check group lists
-#            if k not in ("groups", "user_permissions"):
-#                self.assertEqual(response.data[k], self.data[k])
-#
-#        self.assertEqual(len(response.data["groups"]),
-#                         len(self.data["groups"]))
-#
-#        self.assertEqual(len(response.data["user_permissions"]),
-#                         len(self.data["user_permissions"]))
-#
-#    def test_delete(self):
-#         # Save first (We have already, but we will get the id)
-#        url = reverse('user-list')
-#        response = self.client.post(url, self.data)
-#
-#        # Get the details
-#        url = reverse('user-detail', args=[response.data["id"]])
-#        response = self.client.delete(url)
-#
-#        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
-#
-#        response = self.client.get(url)
-#        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
-#
-#    def test_list(self):
-#        url = reverse('user-list')
-#
-#        before = self.client.get(url).data["count"]
-#
-#        # Sove N users
-#        number_users = random.randrange(20, 100)
-#        for i in range(number_users):
-#            self.data["username"] = "Batman-{0}".format(i)
-#            response = self.client.post(url, self.data)
-#
-#        response = self.client.get(url)
-#
-#        self.assertEqual(response.data["count"], number_users + before)
+    def test_update(self):
+        # Save first (We have already, but we will get the id)
+        url = reverse('stack-list')
+
+        response = self.client.post(url, self.data)
+
+        # Update later
+        url = reverse('stack-detail', args=[response.data["id"]])
+
+        self.data["name"] = "X-men stack2"
+        response = self.client.put(url, self.data)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        # Can't check as a full equals because id... are autofields
+        for k, v in self.data.items():
+            # don't check group lists
+            if k not in ("collaborators", "owner"):
+                self.assertEqual(response.data[k], self.data[k])
+
+            self.assertEqual(urlparse(response.data["owner"]).path,
+                             self.data["owner"])
+
+            self.assertEqual(len(response.data["collaborators"]),
+                             len(self.users[1:]))
+
+    def test_detail(self):
+        # Save first (We have already, but we will get the id)
+        url = reverse('stack-list')
+        response = self.client.post(url, self.data)
+
+        # Get the details
+        url = reverse('stack-detail', args=[response.data["id"]])
+        response = self.client.get(url)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        # Can't check as a full equals because id... are autofields
+        for k, v in self.data.items():
+            # don't check group lists
+            if k not in ("collaborators", "owner"):
+                self.assertEqual(response.data[k], self.data[k])
+
+            self.assertEqual(urlparse(response.data["owner"]).path,
+                             self.data["owner"])
+
+            self.assertEqual(len(response.data["collaborators"]),
+                             len(self.users[1:]))
+
+    def test_delete(self):
+         # Save first (We have already, but we will get the id)
+        url = reverse('stack-list')
+        response = self.client.post(url, self.data)
+
+        # Get the details
+        url = reverse('stack-detail', args=[response.data["id"]])
+        response = self.client.delete(url)
+
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
+    def test_list(self):
+        url = reverse('stack-list')
+
+        before = self.client.get(url).data["count"]
+
+        # Sove N users
+        number_users = random.randrange(20, 100)
+        for i in range(number_users):
+            self.data["name"] = "Stack-{0}".format(i)
+            response = self.client.post(url, self.data)
+
+        response = self.client.get(url)
+
+        self.assertEqual(response.data["count"], number_users + before)
