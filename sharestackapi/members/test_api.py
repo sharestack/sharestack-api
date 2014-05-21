@@ -487,13 +487,12 @@ class CompanyAPITests(APITestCase):
         self.client.login(username=u.username, password=password)
 
         self.data = {
-            "name": "Can add log entry test",
-            "permissions": [
-                reverse('permission-detail', args=[1]),
-                reverse('permission-detail', args=[2]),
-                reverse('permission-detail', args=[3]),
-            ],
-        }
+            "name": "Marvel", 
+            "url": "marvel", 
+            "description": "is an American publisher of comic books",
+            "logo": "http://www.marvel.com/logo.png",
+            "company_user": reverse('user-detail', args=[u.id])],
+            }
 
     def test_create(self):
         url = reverse('company-list')
@@ -502,44 +501,33 @@ class CompanyAPITests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
         self.assertEqual(response.data["name"], self.data["name"])
-        self.assertEqual(len(response.data["permissions"]),
-                         len(self.data["permissions"]))
 
     def test_update(self):
         # Save first (We have already, but we will get the id)
-        url = reverse('group-list')
+        url = reverse('company-list')
         response = self.client.post(url, self.data)
 
         # Update later
-        url = reverse('group-detail', args=[response.data["id"]])
+        url = reverse('company-detail', args=[response.data["id"]])
 
-        new_permissions = [
-            reverse('permission-detail', args=[3]),
-            reverse('permission-detail', args=[4]),
-        ]
-
-        self.data["permissions"] = new_permissions
+        self.data["name"] = "New Marvel"
         response = self.client.put(url, self.data)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
         self.assertEqual(response.data["name"], self.data["name"])
-        self.assertEqual(len(response.data["permissions"]),
-                         len(new_permissions))
 
     def test_detail(self):
-        url = reverse('group-list')
+        url = reverse('company-list')
         response = self.client.post(url, self.data)
 
         # Get the details
-        url = reverse('group-detail', args=[response.data["id"]])
+        url = reverse('company-detail', args=[response.data["id"]])
         response = self.client.get(url)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
         self.assertEqual(response.data["name"], self.data["name"])
-        self.assertEqual(len(response.data["permissions"]),
-                         len(self.data["permissions"]))
 
     def test_delete(self):
         url = reverse('group-list')
