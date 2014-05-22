@@ -530,11 +530,11 @@ class CompanyAPITests(APITestCase):
         self.assertEqual(response.data["name"], self.data["name"])
 
     def test_delete(self):
-        url = reverse('group-list')
+        url = reverse('company-list')
         response = self.client.post(url, self.data)
 
         # Get the details
-        url = reverse('group-detail', args=[response.data["id"]])
+        url = reverse('company-detail', args=[response.data["id"]])
         response = self.client.delete(url)
 
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
@@ -543,7 +543,7 @@ class CompanyAPITests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
     def test_list(self):
-        url = reverse('group-list')
+        url = reverse('company-list')
 
         before = self.client.get(url).data["count"]
 
