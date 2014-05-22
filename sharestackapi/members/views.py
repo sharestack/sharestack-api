@@ -2,11 +2,12 @@ from django.contrib.contenttypes.models import ContentType
 from django.contrib.auth.models import Permission, Group
 from rest_framework import viewsets
 
-from .models import User
+from .models import User, Company
 from .serializers import (UserSerializer,
                           PermissionSerializer,
                           GroupSerializer,
-                          ContentTypeSerializer)
+                          ContentTypeSerializer,
+                          CompanySerializer)
 
 
 class ContentTypeViewSet(viewsets.ModelViewSet):
@@ -39,3 +40,11 @@ class UserViewSet(viewsets.ModelViewSet):
     """
     queryset = User.objects.all()
     serializer_class = UserSerializer
+
+
+class CompanyViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows Company to be viewed or edited.
+    """
+    queryset = Company.objects.all()
+    serializer_class = CompanySerializer
