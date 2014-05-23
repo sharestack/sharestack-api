@@ -14,7 +14,7 @@ from django.core.urlresolvers import reverse
 from rest_framework import status
 from rest_framework.test import APITestCase
 
-from .models import User
+from .models import User, Company
 
 
 class UserAPITests(APITestCase):
@@ -488,18 +488,17 @@ class CompanyAPITests(APITestCase):
 
         self.data = {
             "name": "Marvel", 
-            "url": "marvel", 
+            "url": "marvel.com", 
             "description": "is an American publisher of comic books",
             "logo": "http://www.marvel.com/logo.png",
-            "company_user": reverse('user-detail', args=[u.id])],
+            "company_user": reverse('user-detail', args=[u.id]),
             }
 
     def test_create(self):
         url = reverse('company-list')
-
         response = self.client.post(url, self.data)
-        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-
+        
+	self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(response.data["name"], self.data["name"])
 
     def test_update(self):
@@ -514,7 +513,6 @@ class CompanyAPITests(APITestCase):
         response = self.client.put(url, self.data)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-
         self.assertEqual(response.data["name"], self.data["name"])
 
     def test_detail(self):
@@ -522,11 +520,10 @@ class CompanyAPITests(APITestCase):
         response = self.client.post(url, self.data)
 
         # Get the details
-        url = reverse('company-detail', args=[response.data["id"]])
+	url = reverse('company-detail', args=[response.data["id"]])
         response = self.client.get(url)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-
         self.assertEqual(response.data["name"], self.data["name"])
 
     def test_delete(self):
@@ -534,7 +531,7 @@ class CompanyAPITests(APITestCase):
         response = self.client.post(url, self.data)
 
         # Get the details
-        url = reverse('company-detail', args=[response.data["id"]])
+        url = reverse('company-detail', args=[response.data["name"]])
         response = self.client.delete(url)
 
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
