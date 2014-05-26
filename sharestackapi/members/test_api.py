@@ -485,20 +485,21 @@ class CompanyAPITests(APITestCase):
         # Login, we could use: 'force_authenticate' but we will login
         # as always, the 'classic' way, wiht DRF help
         self.client.login(username=u.username, password=password)
-
         self.data = {
-            "name": "Marvel", 
-            "url": "marvel.com", 
+            "name": "Marvel",
+            "url": "http://marvel.com",
             "description": "is an American publisher of comic books",
             "logo": "http://www.marvel.com/logo.png",
-            "company_user": reverse('user-detail', args=[u.id]),
-            }
+            "company_user": [
+                reverse('user-detail', args=[u.id]),
+            ],
+        }
 
     def test_create(self):
         url = reverse('company-list')
         response = self.client.post(url, self.data)
-        
-	self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(response.data["name"], self.data["name"])
 
     def test_update(self):
@@ -531,7 +532,7 @@ class CompanyAPITests(APITestCase):
         response = self.client.post(url, self.data)
 
         # Get the details
-        url = reverse('company-detail', args=[response.data["name"]])
+        url = reverse('company-detail', args=[response.data["id"]])
         response = self.client.delete(url)
 
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
