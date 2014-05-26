@@ -521,7 +521,7 @@ class CompanyAPITests(APITestCase):
         response = self.client.post(url, self.data)
 
         # Get the details
-	url = reverse('company-detail', args=[response.data["id"]])
+        url = reverse('company-detail', args=[response.data["id"]])
         response = self.client.get(url)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
