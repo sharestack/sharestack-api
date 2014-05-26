@@ -34,7 +34,7 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
                   "reset_password_token", "groups", "user_permissions")
 
 
-class companySerializer(serializers.HyperlinkedModelSerializer):
+class CompanySerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Company
-        fields = ("name", "url", "description", "logo", "company_user")
+        fields = ("id", "name", "url", "description", "logo", "company_user")
